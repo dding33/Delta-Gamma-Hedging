@@ -24,6 +24,7 @@ class BS():
         
         return K*np.exp(-r*T)*norm.cdf(-dm) - S*norm.cdf(-dp)
     
+    
     def CallDelta(S, T, K, sigma, r):
         
         dp = (np.log(S/K) + (r+0.5*sigma**2)*T)/(np.sqrt(T)*sigma)
@@ -67,12 +68,13 @@ sigma = 0.2
 mu = 0.1
 r = 0.02
 T = 0.25
+T_call = 0.5
 
 phi_equity = 0.005
 phi_option = 0.01
 
 P0, delta_P, gamma_P = BS_put(S0, T, K, sigma, r)
-C0, delta_C, gamma_C = BS_call(S0, T, K_call, sigma, r)
+C0, delta_C, gamma_C = BS_call(S0, T_call, K_call, sigma, r)
 
 beta0 = gamma_P/gamma_C
 alpha0 = delta_P - beta0*delta_C
@@ -92,10 +94,10 @@ for sim in tqdm(range(1000)):
 
     M_init = M0
     
-    for day in t_list[:-1]: #Gamma can only be calculated till two days before expiry since it's the second order derivative
+    for day in t_list[1:-1]: #Gamma can only be calculated till two days before expiry since it's the second order derivative
 
         stock_price = s_init + get_dS(dt, mu, sigma, s_init)
-        call_price, delta_C, gamma_C = BS_call(stock_price, T-day, K_call, sigma, r)
+        call_price, delta_C, gamma_C = BS_call(stock_price, T_call-day, K_call, sigma, r)
         delta_P, gamma_P = BS_put(stock_price, T-day, K, sigma, r)[1:]
         beta = gamma_P/gamma_C
         alpha = delta_P - beta*delta_C
@@ -108,7 +110,7 @@ for sim in tqdm(range(1000)):
         M_init = money_account
 
     stock_price_final = s_init + get_dS(dt, mu, sigma, s_init)
-    call_price_final = BS.CallPrice(stock_price_final, T-t_list[-1], K, sigma, r)
+    call_price_final = BS.CallPrice(stock_price_final, T_call-t_list[-1], K, sigma, r)
 
     # financial settling
     money_account = M_init * np.exp(r*dt) \
