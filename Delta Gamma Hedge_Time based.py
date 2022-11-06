@@ -43,38 +43,7 @@ class BS():
     def PutGamma(S, T, K, sigma, r):
         
         return BS.CallGamma(S, T, K, sigma, r)
-    
-    def CallVega(S, T, K, sigma, r):
-        
-        dp = (np.log(S/K) + (r+0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        
-        return norm.pdf(dp)*S*np.sqrt(T)
-    
-    def CallTheta(S, T, K, sigma, r):
-        
-        dp = (np.log(S/K) + (r+0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        dm = (np.log(S/K) + (r-0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        
-        return -S*norm.pdf(dp)*sigma/(2*np.sqrt(T)) - r*K*np.exp(-r*T)*norm.cdf(dm)
-    
-    def PutTheta(S, T, K, sigma, r):
-        
-        dp = (np.log(S/K) + (r+0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        dm = (np.log(S/K) + (r-0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        
-        return -S*norm.pdf(dp)*sigma/(2*np.sqrt(T)) + r*K*np.exp(-r*T)*norm.cdf(-dm)
-    
-    def CallRho(S, T, K, sigma, r):
-        
-        dm = (np.log(S/K) + (r-0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        
-        return K*T*np.exp(-r*T)*norm.pdf(dm)
-    
-    def PutRho(S, T, K, sigma, r):
-        
-        dm = (np.log(S/K) + (r-0.5*sigma**2)*T)/np.sqrt(T)/sigma
-        
-        return -K*T*np.exp(-r*T)*norm.pdf(-dm)    
+
 # get s
 def get_dS(dt, mu, sigma, S_last):
     std = np.sqrt(dt)
@@ -128,7 +97,7 @@ for sim in tqdm(range(1000)):
 
         stock_price = s_init + get_dS(dt, mu, sigma, s_init)
         call_price, delta_C, gamma_C = BS_call(stock_price, T-day, K_call, sigma, r)
-        delta_P, gamma_P = BS_put(stock_price, T-day, K_call, sigma, r)[1:]
+        delta_P, gamma_P = BS_put(stock_price, T-day, K, sigma, r)[1:]
         beta = gamma_P/gamma_C
         alpha = delta_P - beta*delta_C
 
