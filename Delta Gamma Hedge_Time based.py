@@ -146,7 +146,7 @@ for sim in tqdm(range(1000)):
     money_account = M_init * np.exp(r*dt) \
             + alpha * stock_price_final - phi_equity * np.abs(alpha) \
                 + beta * call_price_final - phi_option * np.abs(beta) \
-                    + (stock_price_final < K) * (- K + stock_price_final * (1 - phi_equity))
+                    + (stock_price_final < K) * (- K + stock_price_final)
 
     list_M_final.append(money_account)
 
