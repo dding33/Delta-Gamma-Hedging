@@ -122,7 +122,7 @@ plt.hist(list_M_final,50)
 plt.xlabel('Profit or Loss at time T')
 plt.ylabel('count')
 plt.title('P/L Distribution, Time-based Delta Hedge')
-plt.savefig('Profit Distribition, Time-based Delta Hedge.png')
+plt.savefig('Profit Distribition, Time-based Delta Gamma Hedge.png')
 plt.show()
 
 # Calculate CVaR
