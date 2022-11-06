@@ -123,7 +123,7 @@ for sim in tqdm(range(1000)):
 plt.hist(list_M_final,50)
 plt.xlabel('Profit or Loss at time T')
 plt.ylabel('count')
-plt.title('P/L Distribution, Time-based Delta Hedge')
+plt.title('P/L Distribution, Time-based Delta Gamma Hedge')
 plt.savefig('Profit Distribition, Time-based Delta Gamma Hedge.png')
 plt.show()
 
