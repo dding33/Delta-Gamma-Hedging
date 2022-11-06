@@ -24,7 +24,6 @@ class BS():
         
         return K*np.exp(-r*T)*norm.cdf(-dm) - S*norm.cdf(-dp)
     
-    
     def CallDelta(S, T, K, sigma, r):
         
         dp = (np.log(S/K) + (r+0.5*sigma**2)*T)/(np.sqrt(T)*sigma)
